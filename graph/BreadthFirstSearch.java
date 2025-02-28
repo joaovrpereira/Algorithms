@@ -8,7 +8,7 @@ enum Cor {
 
 class Node {
     Integer numeroVertice;
-    Integer parent;
+    Integer parent=null;
     Double d = Double.NEGATIVE_INFINITY;
     Cor cor = Cor.BRANCO;
 }
@@ -66,12 +66,11 @@ public class BreadthFirstSearch {
         am.get(v).add(u);
     }
 
-    void bfs(){
+    void bfs(int start){
         Queue<Integer> q = new LinkedList<>();
     
-        Node s = nodeList.get(0);
+        Node s = nodeList.get(start);
         s.cor = Cor.CINZA;
-        s.parent = null;
         s.d = 0.0;
     
         q.add(s.numeroVertice);
@@ -99,9 +98,24 @@ public class BreadthFirstSearch {
             System.out.println();
         }
     }
+
+    void printPath(Integer s, Integer v){
+        
+
+        if(s==v){
+            System.out.print("Caminho: "+s+" ");
+        } else if(nodeList.get(v).parent==null){
+                System.out.println("Nenhum caminho de "+s+" a "+v+" existe.");
+                return;
+        }
+        else {
+            printPath(s, nodeList.get(v).parent);
+            System.out.print(v+" ");
+        }
+    }
     public static void main(String[] args) {
         BreadthFirstSearch bfs = new BreadthFirstSearch();
-        bfs.bfs();
+        bfs.bfs(1);
         
         System.out.println("\nGrafo: ");
         bfs.printGraph();
@@ -109,5 +123,7 @@ public class BreadthFirstSearch {
         for (Node node : bfs.nodeList) {
             System.out.println("Vértice " + node.numeroVertice + " - Distância: " + node.d);
         }
+
+        bfs.printPath(1,11);
     }
 }
